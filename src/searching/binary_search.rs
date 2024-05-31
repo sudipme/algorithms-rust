@@ -54,3 +54,45 @@ pub fn jump_search(slice: &[i32], target: i32) -> i32 {
 
     -1
 }
+
+// we wish to find the smallest value that is a valid solution for a problem.
+// We are given a function test_function(x) that returns true if x is a valid solution and false otherwise.
+pub fn smallest_function_solution(function: fn(i32) -> bool, initial_jump: i32) -> i32 {
+    // The initial jump length has to be large enough,
+    // for example some value for which we know beforehand that test_function(jump) is true.
+    let mut jump = initial_jump;
+    let mut x = -1;
+
+    while jump >= 1 {
+        println!("previous jump{jump}");
+        while !function(x + jump) {
+            x += jump;
+            println!("jumped to: {x}");
+        }
+        jump /= 2;
+        println!("new jump {jump}");
+    }
+    // The search finds the largest value of x for which the function(x) is false.
+    // Thus, the next value x + 1 is the smallest possible value for which function(x) is true.
+    x + 1
+}
+
+// starting point should be smaller than position of max value
+// the function returns the x value of the function for which the function produce max value.
+pub fn find_maximum_value(function: fn(i32) -> i32, starting_point: i32, initial_jump: i32) -> i32 {
+    let mut jump = initial_jump;
+    let mut x = starting_point;
+
+    while jump >= 1 {
+        println!("previous jump{jump}");
+        while function(x + jump) < function(x + jump + 1){
+            x += jump;
+            println!("jumped to: {x}");
+        }
+        jump /= 2;
+        println!("new jump {jump}");
+    }
+    x + 1
+}
+
+
